@@ -1,1 +1,1 @@
-# DinningReviewAPI
+# DiningReviewAPI
