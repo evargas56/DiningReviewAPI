@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
+    Optional<Restaurant> findRestaurantByName(String name);
     Optional<Restaurant> findRestaurantByNameAndLocation(String name, String location);
     Restaurant getRestaurantById(Long id);
-    List<Restaurant> getRestaurantsByScoreGreaterThan(Double minScore);
-    List<Restaurant> getRestaurantsByLocation(String location);
-    List<Restaurant> getRestaurantsByPriceRange(Integer priceRange);
+    List<Restaurant> findRestaurantsByScoreGreaterThan(Double minScore);
+    List<Restaurant> findRestaurantsByLocation(String location);
+    List<Restaurant> findRestaurantsByPriceRange(Integer priceRange);
 }
