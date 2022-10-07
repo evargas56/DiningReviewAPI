@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,24 +12,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 public class User {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String username;
+    private String displayName;
 
     private Integer userLevel;
-
-    public User() {}
-
-    public User(User user) {
-        this.username = user.getUsername();
-        this.userLevel = user.getUserLevel();
-    }
-
-    public User(String username, Integer userLevel) {
-        this.username = username;
-        this.userLevel = userLevel;
-    }
 }

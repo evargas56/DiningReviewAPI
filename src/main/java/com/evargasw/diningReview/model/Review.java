@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 public class Review {
     @Id
     @GeneratedValue
@@ -28,24 +30,5 @@ public class Review {
 
     private String comment;
 
-    public Review() {}
-
-    public Review(Review review) {
-        this.username = review.getUsername();
-        this.atmScore = review.getAtmScore();
-        this.foodScore = review.getFoodScore();
-        this.servScore = review.getServScore();
-        this.score = (review.getAtmScore() + review.getFoodScore() + review.getServScore()) / 3;
-        this.comment = review.getComment();
-    }
-
-    public Review(String username, Double atmScore, Double foodScore, Double servScore, String comment) {
-        this.username = username;
-        this.atmScore = atmScore;
-        this.foodScore = foodScore;
-        this.servScore = servScore;
-        this.score = (atmScore + foodScore + servScore) / 3;
-        this.comment = comment;
-    }
-
+    private ReviewStatus status;
 }
