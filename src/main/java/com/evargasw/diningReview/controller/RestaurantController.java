@@ -28,17 +28,6 @@ public class RestaurantController {
         return restaurantRepository.findAll();
     }
 
-    //Obtain a specific restaurant by id
-    @GetMapping("/{id}")
-    public Restaurant getRestaurant(@PathVariable Long id) {
-        var restaurantOptional = restaurantRepository.findById(id);
-        if (restaurantOptional.isPresent()) {
-            return restaurantOptional.get();
-        }
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-
     //Check if restaurant already exists in db and if it is a valid restaurant
     private void checkRestaurant(Restaurant restaurant) {
         if (restaurant.getName().isEmpty() || restaurant.getLocation().isEmpty()) {
@@ -60,7 +49,30 @@ public class RestaurantController {
         return restaurantRepository.save(restaurant);
     }
 
-    //Search for restaurants
+    //Obtain a specific restaurant by id
+    @GetMapping("/{id}")
+    public Restaurant getRestaurant(@PathVariable Long id) {
+        var restaurantOptional = restaurantRepository.findById(id);
+        if (restaurantOptional.isPresent()) {
+            return restaurantOptional.get();
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    //Search for restaurants (PLURAL)
+    //By name
+    @GetMapping("/search")
+    public Iterable<Restaurant> searchRestaurantsByName(@RequestParam String name) {
+        Iterable<Restaurant> restaurants = restaurantRepository.findRestaurantsByName(name);
+
+        if (!restaurants.iterator().hasNext()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return restaurants;
+    }
+
     //By location
     @GetMapping("/search")
     public Iterable<Restaurant> searchRestaurantsByLocation(@RequestParam String location) {
@@ -73,4 +85,19 @@ public class RestaurantController {
         return restaurants;
     }
 
+    //Update restaurant details by id (ADMIN)
+    @PutMapping("/{id}")
+    public Restaurant updateRestaurant(@PathVariable Long id, @RequestBody Restaurant restaurant) {
+        Restaurant updateRestaurant = restaurantRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
+        updateRestaurant.setName(restaurant.getName());
+        updateRestaurant.setLocation(restaurant.getLocation());
+        updateRestaurant.setCuisine(restaurant.getCuisine());
+        updateRestaurant.setVegetarian(restaurant.getVegetarian());
+        updateRestaurant.setVegan(restaurant.getVegan());
+        updateRestaurant.setPriceRange(restaurant.getPriceRange());
+
+        //SCORES ARE NOT UPDATED
+        return restaurantRepository.save(updateRestaurant);
+    }
 }
